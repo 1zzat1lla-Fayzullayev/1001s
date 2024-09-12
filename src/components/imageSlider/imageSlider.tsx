@@ -7,25 +7,25 @@ interface ImageData {
   seat: number;
 }
 
-const ThumbsGallery: React.FC<{ images: ImageData[], onOpen: ()=>void }> = ({ images, onOpen }) => {
+const ThumbsGallery: React.FC<{ images: ImageData[], onOpen: () => void }> = ({ images, onOpen }) => {
   const [index, setIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<ImageData>(images[0]);
 
-  const handleClick = (image: number) => {
-    setSelectedImage(images[image]);
-    setIndex(image)
+  const handleClick = (imageIndex: number) => {
+    setSelectedImage(images[imageIndex]);
+    setIndex(imageIndex);
   };
 
   const handlePrev = () => {
-    const newIndex = index > 0 ? index - 1 : images.length - 4;
+    const newIndex = index > 0 ? index - 1 : images.length - 1; 
     setIndex(newIndex);
-    setSelectedImage(images[newIndex])
+    setSelectedImage(images[newIndex]);
   };
 
   const handleNext = () => {
-    const newIndex = index < images.length - 4 ? index + 1 : 0;
+    const newIndex = index < images.length - 1 ? index + 1 : 0; 
     setIndex(newIndex);
-    setSelectedImage(images[newIndex])
+    setSelectedImage(images[newIndex]);
   };
 
   const getThumbnailImages = () => {
@@ -63,15 +63,14 @@ const ThumbsGallery: React.FC<{ images: ImageData[], onOpen: ()=>void }> = ({ im
       </div>
 
       <div className="flex overflow-x-auto gap-5">
-        {getThumbnailImages().map((image) => (
-         <button onClick={() => handleClick(image.seat)}>
-           <img
-            key={image.id}
-            src={image.src}
-            alt={image.alt}
-            className={`w-[224px] h-[154px] object-cover rounded-2xl z-10 relative ${image.seat === index ? "opacity-75" :""}`}
-          />
-         </button>
+        {getThumbnailImages().map((image, i) => ( 
+          <button key={image.id} onClick={() => handleClick(i + index)}> 
+            <img
+              src={image.src}
+              alt={image.alt}
+              className={`w-[224px] h-[154px] object-cover rounded-2xl z-10 relative ${image.seat === selectedImage.seat ? "opacity-75" : ""}`} 
+            />
+          </button>
         ))}
       </div>
     </div>
